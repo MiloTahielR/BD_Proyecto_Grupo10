@@ -1,23 +1,65 @@
 # Proyecto de Estudio!
-    
-**Estructura del documento principal:**
 
-# PRESENTACIÓN (Título/Nombre Proyecto)
+    
+**“Tienda de emprendedores regionales”**
 
 **Asignatura**: Bases de Datos I (FaCENA-UNNE)
 
 **Integrantes**:
- - Sed vel lectus nec lectus placerat laoreet et sed est.
- - Sed ac justo ac mauris porttitor convallis non sit amet felis.
- - In tincidunt augue sed molestie malesuada.
 
-**Año**: 2024
+- Aquino, Ruth.
+- Rodriguez Antorena, Milo Tahiel.
+- Rojas, Karen Denise.
+- Sandoval Maria Victoria
+- Soto, Belen E.
+
+**Año**: 2025
 
 ## CAPÍTULO I: INTRODUCCIÓN
 
 ### Caso de estudio
 
-Maecenas molestie lacus tincidunt, placerat dolor et, ullamcorper erat. Mauris tortor nisl, ultricies ac scelerisque nec, feugiat in nibh. 
+El caso de estudio seleccionado para este trabajo es una Aplicación Web de E-commerce,
+orientada a brindar un espacio de comercialización a los emprendedores regionales de la
+ciudad de Corrientes Capital. El sistema está diseñado para facilitar la promoción, gestión y
+venta de productos locales, con un enfoque inclusivo y social que favorezca la digitalización de
+pequeños negocios.
+Este sistema se ocupa específicamente de:
+
+● Gestionar los usuarios registrados, distinguiendo entre emprendedores, clientes y
+administradores de la plataforma.
+
+● Permitir a los emprendedores publicar, editar y eliminar sus productos, manteniendo
+información relevante como nombre, descripción, precio, stock y categoría.
+
+● Facilitar a los clientes la exploración de productos, la conformación de un carrito de
+compras y la posterior generación de órdenes de compra.
+
+● Administrar las ventas realizadas, con acceso tanto para el cliente (historial de compras)
+como para el emprendedor (registro de ventas).
+
+● Integrar y controlar los métodos de pago disponibles, garantizando transacciones
+seguras.
+
+● Ofrecer distintas opciones de entrega de los productos adquiridos (envío, retiro en punto
+de entrega o retiro personal). OPCIONAL
+
+● Posibilitar la notificación automática a los emprendedores ante ventas o consultas
+recibidas.
+
+### Alcance
+El alcance de la plataforma abarca la comercialización de productos en el ámbito regional,
+permitiendo que los emprendedores locales tengan mayor visibilidad y alcancen una base de
+clientes más amplia.
+Por otra parte, se establecen los siguientes límites:
+
+● No se contemplan funcionalidades de reseñas o valoraciones de productos por parte de
+los clientes.
+
+● No se implementa la gestión de devoluciones ni de proveedores externos.
+
+● La administración de campañas de marketing digital, difusión o soporte externo queda
+fuera del alcance del sistema
 
 ### Definición o planteamiento del problema
 
