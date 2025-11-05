@@ -1,0 +1,224 @@
+/*
+
+CONSIGNAS OPTIMIZACIÓN INDICES:
+-Realizar una carga masiva de por lo menos un millon de registros sobre alguna tabla que contenga el campo fecha(sin indice). Hacerlo con un script para automatizarlo.
+
+-Realizar una busqueda por periodo y registrar el plan de ejecucion utilizado por el motor y los tiempos de respuesta.
+
+-Definir indice agrupado sobre la columna fecha y repetir la consulta anterior, registrar el plan de ejecucion utilizado por el motor y los tiempos de respuesta.
+
+-Borrar el indice creado.
+
+-Definir otro indice agrupado sobre columna fecha pero que ademas incluya las columnas seleccionadas y repetir consulta anterior.Registrar el plan de ejecucion utilizado por el motor y tiempos de respuesta.
+
+-Expresar las conclusiones en base a las pruebas realizadas.
+
+
+
+Fundamentación de Tabla seleccionada para ejercicio de Optimización
+
+Para aplicar los conceptos de Optimización a través de Índices, vamos a utilizar la tabla de Pago, 
+la cual dentro del contexto del Proyecto presentado, se relaciona con la factura, el detalle de la factura y producto. 
+Vamos a suponer para nuestra prueba, que deseamos obtener información de las Ventas realizadas 
+por los emprendedores a través de la tienda online, por ello trabajaremos con esta tabla.
+
+Vamos a realizar unas modificaciones a las claves foráneas de la tabla, quitándolas para que la misma no cuente 
+con tantas relaciones, de modo que podamos agilizar el proceso de consultas para este ejercicio en particular.
+
+Se crea una base de datos alternativa para realizar este ejercicio, llamada 'Optimizacion_Pago_BDProyecto'
+ */
+ Create database Optimizacion_Pago_BDProyecto;
+
+ use Optimizacion_Pago_BDProyecto;
+
+CREATE TABLE Pago
+(
+  id_pago INT NOT NULL,
+  fecha DATE NOT NULL,
+  montoTotal FLOAT NOT NULL,
+  id_factura INT NOT NULL,
+  id_formaPago INT NOT NULL,
+  id_estadoPago INT NOT NULL,
+  CONSTRAINT pk_Pago PRIMARY KEY (id_pago)
+
+ --Quitamos las claves foráneas para el ejercicio, originalmente lleva las siguientes:
+ --CONSTRAINT fk_Pago_Factura FOREIGN KEY (id_factura) REFERENCES Factura(id_factura),
+ --CONSTRAINT fk_Pago_FormaPago FOREIGN KEY (id_formaPago) REFERENCES FormaPago(id_formaPago),
+ --CONSTRAINT fk_Pago_EstadoPago FOREIGN KEY (id_estadoPago) REFERENCES EstadoPago(id_estadoPago)
+
+);
+
+
+/*
+Carga masiva de 100.000 registros en Pago
+
+Para la carga masiva, debido a limitaciones del hardware en donde se realiza las consultas, se utiliza 
+una carga de 100.000 registros, para que el ejemplo sea posible de ejecutar y revisar sus resultados.
+*/
+
+-- Variables de control
+DECLARE @i INT = 1;
+DECLARE @max INT = 100000;
+
+--Utilizamos un bucle While para insertar los datos a la tabla y creamos valores aleatorios con funciones como Random RAND() o fechas aleatorias con DEATEADD()
+WHILE @i <= @max
+BEGIN
+    INSERT INTO Pago (id_pago, fecha, montoTotal, id_factura, id_formaPago, id_estadoPago)
+    VALUES (
+        @i,
+        DATEADD(DAY, ABS(CHECKSUM(NEWID())) % 1825, '2020-01-01'),  -- fecha aleatoria entre 2020 y 2025
+        CAST(ROUND(RAND(CHECKSUM(NEWID())) * (100000 - 1000) + 1000, 2) AS FLOAT), -- monto aleatorio
+        ABS(CHECKSUM(NEWID())) % 50000 + 1, -- id_factura aleatorio
+        ABS(CHECKSUM(NEWID())) % 5 + 1,     -- id_formaPago aleatorio
+        ABS(CHECKSUM(NEWID())) % 3 + 1      -- id_estadoPago aleatorio
+    );
+
+    SET @i += 1;
+END;
+
+PRINT 'Carga masiva completada: 100.000 registros insertados.';
+
+/*
+Busqueda por periodo y registro del plan de ejecucion utilizado por el motor y los tiempos de respuesta.
+
+La consulta que elegimos es una consulta sencilla, deseamos saber la cantidad de ventas realizadas en los últimos 3 años.
+Lo realizamos con un COUNT y un WHERE según la fecha indicada.
+Para registrar el plan de ejecución y tiempos, utilizamos las sentencias 
+SET STATICS TIME para los tiempos de la CPU, y SET STATICS IO para las lecturas del disco.
+
+*/
+
+-- CONSULTA BASE SIN ÍNDICES: Búsqueda de Ventas (según los pagos entrantes) en los últimos 3 años
+
+--Medimos el tiempo de CPU,tiempo total y las lecturas de disco
+SET STATISTICS TIME ON;       
+SET STATISTICS IO ON;         
+GO
+
+--Consulta a realizar, debe devolver un registro con información de las ventas con sus respectivos montos, formas de pago y fecha de los últimos tres años
+SELECT 
+    fecha,
+    montoTotal,
+    id_formaPago
+FROM Pago
+WHERE fecha >= DATEADD(YEAR, -3, GETDATE()); 
+
+GO
+
+SET STATISTICS TIME OFF;
+SET STATISTICS IO OFF;
+/*
+-OBSERVACIÓN Y RESULTADOS:
+
+(43252 filas afectadas)
+Tabla 'Pago'. Recuento de exámenes 1, lecturas lógicas 449, lecturas físicas 1, lecturas anticipadas 143, lecturas lógicas de LOB 0, lecturas físicas de LOB 0, lecturas anticipadas de LOB 0.
+
+Tiempos de ejecución de SQL Server:
+   Tiempo de CPU = 47 ms, tiempo transcurrido = 485 ms.
+Tiempo de análisis y compilación de SQL Server: 
+   Tiempo de CPU = 0 ms, tiempo transcurrido = 0 ms.
+
+*/
+
+
+/*
+Definición de indice agrupado por fecha, registro del plan de ejecucion utilizado por el motor y los tiempos de respuesta.
+
+
+Según el concepto de Índice Agrupado(CLUSTERED INDEX), las tablas deben contar con un único índice agrupado en la misma. 
+Por defecto SQL Server crea un índice agrupado con la PK de la tabla, por lo tanto vamos a modificar
+la misma para eliminar la PK, y luego poder crear el índice agrupado por fecha para el ejercicio.
+*/
+
+--Modificación de tabla y creación de nuevo Indice Agrupado 
+ALTER TABLE Pago DROP CONSTRAINT pk_Pago;
+
+CREATE CLUSTERED INDEX IndiceAgrup_Pago_Fecha ON Pago(fecha);
+
+--Lanzamos la misma consulta y observamos los resultados
+
+SET STATISTICS TIME ON;
+SET STATISTICS IO ON;
+GO
+
+SELECT 
+    fecha,
+    montoTotal,
+    id_formaPago
+FROM Pago
+WHERE fecha >= DATEADD(YEAR, -3, GETDATE());
+
+SET STATISTICS TIME OFF;
+SET STATISTICS IO OFF;
+
+/*
+-OBSERVACIÓN Y RESULTADOS:
+
+(43252 filas afectadas)
+Tabla 'Pago'. Recuento de exámenes 1, lecturas lógicas 240, lecturas físicas 0, lecturas anticipadas 0, lecturas lógicas de LOB 0, lecturas físicas de LOB 0, lecturas anticipadas de LOB 0.
+
+ Tiempos de ejecución de SQL Server:
+ Tiempo de CPU = 15 ms, tiempo transcurrido = 279 ms.
+
+
+*/
+
+/*
+Eliminamos el índice Indice_Pago_Fecha creado a partir de la fecha.
+*/
+
+DROP INDEX IndiceAgrup_Pago_Fecha ON Pago;
+
+/*
+Definir otro indice No agrupado por fecha pero que ademas incluya las columnas seleccionadas. Registro del plan de ejecucion utilizado por el motor y tiempos de respuesta.
+
+Ahora vamos a realizar la misma consulta, pero seleccionando las columnas montoTotal y id_formaPago con INCLUDE 
+en un Indice no agrupado. Al utilizar el INCLUDE es que SQL se "ahorra" el paso de Key Lookup,  el cual realiza una 
+búsqueda para traer los datos de las otras columnas asociadas a la fila de nuestro Índice fecha(en este ejemplo busca 
+montoTotal, id_formaPago) lo cual genera un paso extra y repercute en el tiempo/rendimiento cuando mayor es la cantidad de datos del lote.
+
+*/
+
+CREATE NONCLUSTERED INDEX Indice_Include_Pago_Fecha ON Pago(fecha)
+INCLUDE (montoTotal, id_formaPago);
+
+SET STATISTICS TIME ON;
+SET STATISTICS IO ON;
+GO
+
+SELECT 
+    fecha,
+    montoTotal,
+    id_formaPago
+FROM Pago
+WHERE fecha >= DATEADD(YEAR, -3, GETDATE());
+
+SET STATISTICS TIME OFF;
+SET STATISTICS IO OFF;
+
+/*
+-OBSERVACIÓN Y RESULTADOS:
+
+(43252 filas afectadas)
+Tabla 'Pago'. Recuento de exámenes 1, lecturas lógicas 142, lecturas físicas 0, lecturas anticipadas 0, lecturas lógicas de LOB 0, lecturas físicas de LOB 0, lecturas anticipadas de LOB 0.
+
+ Tiempos de ejecución de SQL Server:
+   Tiempo de CPU = 47 ms, tiempo transcurrido = 265 ms.
+
+*/
+
+/*
+OBSERVACIÓN FINAL: 
+
+Escenario |      Tipo de Índice	     | Lecturas Lógicas	|  CPU (ms)	|  Tiempo (ms)	|    Comentario
+1	                Sin índice	               449	            47	           485	      Table Scan completo
+2	              Clustered(fecha)             240	            15	           279	      Seek por rango y KeyLookup
+3	          Nonclustered con INCLUDE	       142	            47	           265	      Consulta cubierta sin Key Lookup
+
+En este ejercicio se pudo comprobar cómo el uso de índices mejora el rendimiento de las consultas en SQL Server.
+Primero, sin ningún índice, la consulta tardó más tiempo y realizó muchas lecturas lógicas, ya que el motor tuvo que recorrer toda la tabla con Table Scan.
+Después al crear un índice agrupado por fecha, las lecturas disminuyen aproximadamente a la mitad y el tiempo de ejecución fue menor, porque los datos quedaron ordenados físicamente por esa columna con un acceso más directo al rango de fechas.
+Y por último con el índice no agrupado sobre fecha y las columnas incluidas (montoTotal e id_formaPago), se obtuvo el mejor resultado, ya que la consulta fue cubierta completamente por el índice, evitando accesos "extras" a la tabla con Key Lookup.
+
+En conclusión los resultados nos demostraron que los índices, especialmente cuando se diseñan según las consultassencillas como la aplicada en el ejercicio, mejoran los tiempos de respuesta y reducen el costo de lectura en la base de datos.
+*/
