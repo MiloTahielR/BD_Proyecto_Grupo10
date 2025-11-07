@@ -1,3 +1,4 @@
+
 -- SCRIPT "TIENDA DE EMPRENDEDORES"
 -- INSERCIÓN DEL LOTE DE DATOS
 
@@ -9,14 +10,7 @@ GO
 INSERT INTO Rol (id_rol, descripcion) VALUES
 (1, 'Administrador'),
 (2, 'Emprendedor'),
-(3, 'Cliente'),
-(4, 'Cajero'),
-(5, 'Supervisor'),
-(6, 'Soporte'),
-(7, 'Gerente'),
-(8, 'Encargado'),
-(9, 'Vendedor'),
-(10, 'Invitado');
+(3, 'Cliente')
 GO
 
 -------------------------------------------------------
@@ -24,63 +18,36 @@ GO
 -------------------------------------------------------
 INSERT INTO Estado (id_estado, descripcion) VALUES
 (1, 'Activo'),
-(2, 'Inactivo'),
-(3, 'Suspendido'),
-(4, 'Pendiente'),
-(5, 'Bloqueado'),
-(6, 'Verificado'),
-(7, 'Eliminado'),
-(8, 'Nuevo'),
-(9, 'Revisando'),
-(10, 'Archivado');
+(2, 'Inactivo')
 GO
 
 -------------------------------------------------------
 -- 3 Tabla: FormaPago
 -------------------------------------------------------
 INSERT INTO FormaPago (id_formaPago, descripcion) VALUES
-(1, 'Efectivo'),
-(2, 'Tarjeta Débito'),
-(3, 'Tarjeta Crédito'),
-(4, 'Transferencia Bancaria'),
-(5, 'Mercado Pago'),
-(6, 'Pago Fácil'),
-(7, 'Crédito en cuenta'),
-(8, 'Cheque'),
-(9, 'QR'),
-(10, 'Otro');
+(1, 'Tarjeta'),
+(2, ' Transferencia'),
+(3, 'Efectivo')
 GO
 
 -------------------------------------------------------
 -- 4 Tabla: Categoria
 -------------------------------------------------------
 INSERT INTO Categoria (id_categoria, descripcion) VALUES
-(1, 'Alimentos'),
-(2, 'Artesanías'),
-(3, 'Bebidas'),
+(1, 'Artesanías'),
+(2, 'Accesorios'),
+(3, 'Gastronomia'),
 (4, 'Textiles'),
-(5, 'Decoración'),
-(6, 'Tecnología'),
-(7, 'Belleza'),
-(8, 'Hogar'),
-(9, 'Joyería'),
-(10, 'Otros');
+(5, 'Decoración')
 GO
 
 -------------------------------------------------------
 -- 5 Tabla: EstadoPago
 -------------------------------------------------------
 INSERT INTO EstadoPago (id_estadoPago, descripcion) VALUES
-(1, 'Pendiente'),
-(2, 'Aprobado'),
-(3, 'Rechazado'),
-(4, 'En proceso'),
-(5, 'Anulado'),
-(6, 'Reembolsado'),
-(7, 'Completado'),
-(8, 'Devuelto'),
-(9, 'Esperando'),
-(10, 'Cancelado');
+(1, 'Aprobado'),
+(2, 'Pendiente'),
+(3, 'Rechazado')
 GO
 
 -------------------------------------------------------
@@ -91,7 +58,7 @@ INSERT INTO Usuarios (id_usuarios, nombre, email, contraseña, id_estado, id_rol
 (2, 'Maria Gomez', 'maria.gomez@hotmail.com', 'pass2', 1, 3),
 (3, 'Pedro Ruiz', 'pedro.ruiz@yahoo.com', 'pass3', 2, 2),
 (4, 'Ana Lopez', 'ana.lopez@gmail.com', 'pass4', 1, 1),
-(5, 'Carlos Diaz', 'carlos.diaz@outlook.com', 'pass5', 3, 3),
+(5, 'Carlos Diaz', 'carlos.diaz@outlook.com', 'pass5', 1, 3),
 (6, 'Sofia Torres', 'sofia.torres@gmail.com', 'pass6', 1, 2),
 (7, 'Luis Fernández', 'luis.fernandez@yahoo.com', 'pass7', 2, 3),
 (8, 'Rosa Medina', 'rosa.medina@hotmail.com', 'pass8', 1, 2),
@@ -103,16 +70,16 @@ GO
 -- 7 Tabla: Producto
 -------------------------------------------------------
 INSERT INTO Producto (id_producto, nombre, descripcion, stock, precio, id_categoria) VALUES
-(1, 'Yerba Orgánica', 'Yerba mate artesanal', 100, 2500, 1),
-(2, 'Mermelada de Frutilla', 'Mermelada casera', 80, 1800, 1),
-(3, 'Alfajor Artesanal', 'Dulce de leche regional', 60, 900, 1),
-(4, 'Mate de Madera', 'Artesanía regional', 40, 3000, 2),
+(1, 'Yerba Orgánica', 'Yerba mate artesanal', 100, 2500, 3),
+(2, 'Mermelada de Frutilla', 'Mermelada casera', 80, 1800, 3),
+(3, 'Alfajor Artesanal', 'Dulce de leche regional', 60, 900, 3),
+(4, 'Mate de Madera', 'Artesanía regional', 40, 3000, 1),
 (5, 'Camisa de Lino', 'Ropa ecológica', 30, 7000, 4),
 (6, 'Cartera de Cuero', 'Artesanía de cuero local', 25, 12500, 2),
-(7, 'Jabón Natural', 'Producto de cosmética artesanal', 200, 600, 7),
-(8, 'Vaso Decorativo', 'Hecho a mano en cerámica', 50, 2500, 5),
-(9, 'Collar de Plata', 'Joyería artesanal', 15, 15000, 9),
-(10, 'Termo de Acero', 'Producto de acero inoxidable', 70, 18000, 6);
+(7, 'Jabón Natural', 'Producto de cosmética artesanal', 200, 600, 1),
+(8, 'Vaso Decorativo', 'Hecho a mano en cerámica', 50, 2500, 1),
+(9, 'Collar de Plata', 'Joyería artesanal', 15, 15000, 2),
+(10, 'Cuencos de madera', 'Producto tallado a mano a medida', 70, 18000, 5);
 GO
 
 -------------------------------------------------------
@@ -186,12 +153,12 @@ INSERT INTO Pago (id_pago, fecha, montoTotal, id_factura, id_formaPago, id_estad
 (1, '2025-10-01', 6800, 1, 2, 2),
 (2, '2025-10-02', 2700, 2, 1, 1),
 (3, '2025-10-03', 3000, 3, 3, 2),
-(4, '2025-10-04', 14000, 4, 4, 2),
-(5, '2025-10-05', 12500, 5, 5, 1),
+(4, '2025-10-04', 14000, 4, 1, 2),
+(5, '2025-10-05', 12500, 5, 3, 1),
 (6, '2025-10-06', 2400, 6, 2, 2),
 (7, '2025-10-07', 2500, 7, 1, 2),
 (8, '2025-10-08', 30000, 8, 3, 3),
-(9, '2025-10-09', 18000, 9, 5, 2),
+(9, '2025-10-09', 18000, 9, 1, 2),
 (10, '2025-10-10', 900, 10, 2, 1);
 GO
 
