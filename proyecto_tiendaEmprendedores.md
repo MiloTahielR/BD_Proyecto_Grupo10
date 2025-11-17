@@ -109,18 +109,32 @@ Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Su
 **TEMA 4 "  Vistas y vistas indexadas "** 
 Vistas.
 Una vista es una instrucción T-SQL almacenada que actúa como una fuente lógica de datos. Puede considerarse una tabla virtual cuyo contenido se genera dinámicamente cada vez que se consulta, ya que la vista no almacena datos físicamente en la base de datos salvo en el caso particular de las vistas indexadas. Su definición se basa en una sentencia SELECT, y puede involucrar una o varias tablas, simplificando el acceso a consultas complejas mediante un nombre único.  (Medina Serrano, 2015; Microsoft, 2024)
+
 Las vistas permiten abstraer u ocultar la estructura real de las tablas, mejorar la seguridad limitando el acceso a columnas sensibles y proveer una capa de presentación más amigable para el usuario. También pueden emplearse para fines de rendimiento cuando se convierten en vistas indexadas.  (Medina Serrano, 2015)
+
 En determinados casos, las vistas son actualizables, lo que permite realizar operaciones INSERT, UPDATE o DELETE sobre ellas. En estos casos los datos no se modifican en la vista (que no contiene valores) sino en las tablas subyacentes. Para que una vista sea actualizable deben cumplirse ciertas condiciones como: incluir las claves primarias y columnas NOT NULL de las tablas asociadas, derivar sus columnas directamente de una única tabla y evitar operaciones como agregaciones o uniones que impidan determinar en qué tabla debe aplicarse la modificación.  (Quintana, 2014)
+
 Por el contrario, las vistas definidas con operaciones de conjuntos pueden sufrir operaciones update o delete pero no pueden sufrir operaciones insert, ya que no se puede determinar en cuál de todas las tablas se debe realizar la inserción.
 
 Cuando se deben utilizar vistas : 
-Cuando necesite presentar a un cliente la información que realmente le interesa, quitando las columnas que no contienen información de interés.  Para no mostrar la estructura de una tabla, es decir, los nombres de las columnas que la componen
+Cuando necesite presentar a un cliente la información que realmente le interesa, quitando las columnas que no contienen información de interés.  Para no mostrar la estructura de una tabla, es decir, los nombres de las columnas que la componen.
+
+<img width="917" height="412" alt="captura_vistaSimple1" src="https://github.com/user-attachments/assets/4c4925cc-d1ea-43f3-b303-5d20cdd014ee" />
+<img width="891" height="325" alt="captura_vistaSimple2" src="https://github.com/user-attachments/assets/8e812a75-52f2-49a8-8afe-439d34c2464d" />
+
+
 Vistas indexadas.
 Un índice puede entenderse como una estructura ordenada que almacena los valores de una o varias columnas de una tabla junto con una referencia a sus filas. Los índices pueden ser: Unique: garantizan que los valores no nulos de la clave no se repitan en la tabla. Clustered: ordenan físicamente los registros de la tabla según la clave del índice. ASC/DESC: especifican el orden físico utilizado.
+
 El principal beneficio de los índices es que las filas quedan ordenadas por la clave de búsqueda, permitiendo algoritmos de localización más eficientes y reduciendo el coste de las operaciones SELECT. Sin embargo, incrementan el coste de las operaciones INSERT, DELETE y ciertos UPDATE, ya que SQL Server debe mantener la estructura del índice actualizada.
+
 La creación de un índice clustered único sobre una vista transforma a dicha vista en una vista indexada. A diferencia de las vistas tradicionales, las vistas indexadas son materializadas, es decir que SQL Server calcula y almacena físicamente los resultados de la definición de la vista en el disco, manteniéndolos sincronizados con la tabla base. Esto mejora notablemente el rendimiento de consultas repetitivas, especialmente aquellas que agregan o filtran grandes volúmenes de datos, ya que se evita recalcular la consulta SELECT en cada ejecución y se reducen las lecturas lógicas y el uso de CPU.
+
 No todas las vistas pueden ser indexadas. SQL Server exige condiciones específicas, entre ellas: Definición con WITH SCHEMABINDING, estructura determinista (sin funciones no determinísticas), ausencia de operaciones no permitidas (UNION, TOP, funciones escalar no deterministas, etc.), creación obligatoria de un índice clustered único como primer índice.
+
 Las vistas indexadas resultan especialmente útiles en consultas de análisis sobre grandes volúmenes de datos. Sin embargo, no son adecuadas cuando las tablas base tienen una alta frecuencia de modificaciones, debido al coste adicional de mantenimiento que implican.
+
+<img width="1068" height="451" alt="captura_vistaindexada" src="https://github.com/user-attachments/assets/5a58f8c4-80d9-4973-8be3-8abb3a6279e9" />
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
 
