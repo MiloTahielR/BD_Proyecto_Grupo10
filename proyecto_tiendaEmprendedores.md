@@ -97,8 +97,46 @@ El uso de transacciones garantiza que los procesos que involucran múltiples ope
 Por último, las transacciones anidadas permiten estructurar procesos internos dentro de una transacción mayor. Esto proporciona un control adicional sobre cada etapa del proceso y permite manejar errores específicos en pasos intermedios. Su uso resulta especialmente valioso cuando una operación principal depende de varios subprocesos que también deben validarse o revertirse en caso de fallas. Su aplicación en el proyecto demuestra un manejo avanzado de la integridad transaccional.
 La integración coherente de procedimientos almacenados, vistas, índices y mecanismos transaccionales permite construir un sistema seguro, eficiente y preparado para soportar operaciones comerciales reales, garantizando la integridad de los datos y la escalabilidad futura del proyecto.
 
-**TEMA 1 " ---- "** 
-Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+**TEMA 1 "Procedimientos y Funciones almacenadas "** 
+Conceptos:
+
+Procedimientos Almacenados:
+Conjunto de sentencias (instrucciones) SQL que se guardan como un objeto de  Base de Datos y se puede ejecutar en un solo comando. Se usan para ejecutar operaciones completas (inserción,eliminación,actualización), pueden aceptar parámetros de entrada, salida permitiendo modificar los valores que se devuelven.
+                                             Ventajas
+Reduce la repetición de código
+Facilita la organización y mantenimento del código
+Mejora la seguridad
+Aumenta el rendimiento porque se ejecuta las operaciones en el servidor de la base de datos
+                                             Tipos
+.User-defiend:
+Un procedimiento definido por el usuario se puede crear en una base de datos definida por el usuario o en todas las bases de datos del sistema excepto en la base de datos RESOURCE	
+.Temporary:
+Los procedimientos temporales son una forma de procedimientos definidos por el usuario,son como un procedimiento permanente, salvo que se almacenen en TEMPDB.
+Hay dos tipos de procedimientos temporales locales y globales 
+.System
+Los procedimientos del sistema se incluyen con el motor de base de datos.Están almacenadas físicamente en la base de datos interna y oculta de RESOURCE ,se muestran de forma lógica en el esquema sys de cada BD definidas por el sistema y por el usuario.
+                                               Ejecución
+El método más común es que una aplicación o un usuario llame al procedimiento almacenado para que se ejecute automáticamente cuando se inicie una instancia.Para llamar a un procedimiento se usa la palabra clave EXECUTE o EXEC.
+Los procedimientos del sistema comienzan con el prefijo “sp_ “, puesto que aparecen lógicamente en todas las bases de datos del sistema se pueden ejecutar desde cualquier base de datos sin necesidad de clasificar totalmente el nombre del procedimiento.
+
+-Funciones Almacenadas:
+Es un procedimiento que devuelve siempre un valor o tabla. No se pueden modificar directamente los datos. 
+Generalmente solo recibe parámetros de entrada ya que su propósito principal es procesar datos y devolver un resultado. Se usa para realizar cálculos o transformaciones de datos que se necesitan en múltiples consultas.
+                                                 Ventajas
+.Programación Modular
+.Ejecución más rápida
+                                                   Tipos
+.Funciones escalares:
+Las funciones escalares definidas por el usuario devuelve un único valor de datos del tipo definido en la clausura RETURNS .En una función escalar insertada el valor escalar es el resultado de una sola instrucción
+.Funciones con valor de tabla:
+Las funciones con valor de tabla definidas por el usuario devuelve un tipo de dato tabla,no tienen cuerpo,la tabla es el conjunto resultado de una sola instrucción SELECT
+                                                 Limitaciones
+Las funciones definidas por el usuario no se pueden utilizar para realizar modificaciones en el estado de la base de datos.
+No pueden devolver varios conjuntos de resultados,no admite try…catch
+No pueden llamar a un procedimiento almacenado, no pueden usar tablas temporales
+
+                                     Diferencias:
+<img width="635" height="427" alt="{9531CFB6-3B30-416C-8A74-6C2EC45F86B7}" src="https://github.com/user-attachments/assets/2a54a35b-08a5-40d7-a1a9-e0e1589e1596" />
 
 
 **TEMA 2 " ----- "** 
