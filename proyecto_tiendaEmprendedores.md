@@ -245,6 +245,74 @@ Ante un error, se revierte hasta el punto de guardado, sin cancelar toda la tran
 Finalmente, se confirma la transacción completa cuando todas las operaciones son exitosas
 Este enfoque permite mayor flexibilidad y control, especialmente en procesos de múltiples etapas como inserciones masivas, actualizaciones dependientes o cálculos secuenciales.
 
+Implementación en el proyecto:
+
+Como primer paso se realizó un SELECT sobre de las tablas Factura, DetalleFactura y Producto para ver cuantas teniamos generadas y verificar si las transacciones implementadas se ejecutan de manera correcta.
+<img width="583" height="294" alt="image" src="https://github.com/user-attachments/assets/a8aea77a-bb1c-4bee-9da9-aba9d6655797" />
+
+Paso 1 – Transacción exitosa
+En el primer caso, se desarrolló una transacción exitosa en la cual se lleva a cabo el flujo completo de una venta:
+
+1-se genera un nuevo id_factura asegurando que no haya conflictos de concurrencia mediante el uso de bloqueos (UPDLOCK, HOLDLOCK),
+
+2-se inserta la cabecera de la factura,
+<img width="626" height="210" alt="image" src="https://github.com/user-attachments/assets/04398220-2604-41f4-9dd8-a0075f1f089b" />
+
+3-se registra el detalle vinculando un producto, cantidad y precio unitario,
+<img width="740" height="113" alt="image" src="https://github.com/user-attachments/assets/d594603f-1937-4d94-ae20-64e547a35ca9" />
+
+4-se valida el stock disponible y se descuenta la cantidad correspondiente,
+<img width="682" height="92" alt="image" src="https://github.com/user-attachments/assets/d342233b-2ef7-4c32-b876-86c578beb612" />
+
+5-finalmente, se recalcula y actualiza el total de la factura en base al detalle cargado.
+<img width="637" height="248" alt="image" src="https://github.com/user-attachments/assets/a37fb1f0-efb8-42c7-885c-8aaced3dfd46" />
+
+Resultados: 
+<img width="645" height="284" alt="image" src="https://github.com/user-attachments/assets/2539f000-36be-4de6-bd00-b3a78691dd57" />
+Se comprueba que se realizó la transacción de manera correcta. Genera una nueva factura con su detalle y descontando el stock.
+
+Todo esto se encuentra encapsulado dentro de un bloque BEGIN TRAN ... COMMIT con manejo de errores mediante TRY...CATCH. De esta manera, si cualquier parte del proceso fallara, la transacción se revertiría con ROLLBACK, pero en este escenario se comprueba su correcto funcionamiento y se verifica el resultado con consultas posteriores a las tablas involucradas.
+
+
+
+Paso 2 – Transacción con error intencional (FK)
+Se realiza un SELECT para verificar que no se produzca una modificación.
+<img width="585" height="163" alt="image" src="https://github.com/user-attachments/assets/e58f345a-fb96-4b03-a0ae-686d216b51d8" />
+Tenemos registradas 15 facturas.
+
+Se intentó insertar un detalle con un id_producto inexistente (por ejemplo, 9999), generando violación de clave foránea.
+<img width="758" height="406" alt="image" src="https://github.com/user-attachments/assets/f584a12b-07b0-409a-ab9a-3d455547110e" />
+
+Resultado: 
+<img width="652" height="307" alt="image" src="https://github.com/user-attachments/assets/d84d0ff5-e9cd-47e7-83bc-fcc3603f4d7a" />
+No se realizó la transacción por que no hubo coincidencia, por lo tanto se mantienen las 15 facturas generadas.
+
+Se comprobó que el CATCH ejecutó el ROLLBACK, evitando que quedara la factura “huérfana” o datos inconsistentes.
+
+Paso 3 – Transacción con SAVEPOINT (transacción anidada)
+Se inició una transacción y se insertó la factura y su detalle.
+<img width="747" height="289" alt="image" src="https://github.com/user-attachments/assets/19a44afe-2f7d-477e-9fe4-d3bacf8f502c" />
+
+Se definió un SAVE TRAN SP_Stock antes de validar el stock.
+Si el stock era insuficiente, se ejecutó ROLLBACK TRAN SP_Stock y se lanzó un error con THROW, generando la reversión de todo el proceso.
+En caso de éxito, se actualizó el stock y el total de la factura, finalizando con COMMIT.
+
+Caso de stock insuficiente:
+<img width="755" height="421" alt="image" src="https://github.com/user-attachments/assets/c8d27f4f-8a8e-4592-923a-ff582851585a" />
+Resultado: 
+<img width="730" height="345" alt="image" src="https://github.com/user-attachments/assets/4c96dfe9-14a9-4c60-86ed-d35b6a30ebff" />
+No se generó la factura y tampoco se descontó el stock.
+Caso éxito:
+<img width="576" height="493" alt="image" src="https://github.com/user-attachments/assets/6457a226-71b6-47d9-b971-4108880204b7" />
+Resultados:
+<img width="807" height="426" alt="image" src="https://github.com/user-attachments/assets/81f5a358-642a-46b8-8577-ac466accbb4b" />
+Se genera una nueva factura con el detalle y el stock actualizado.
+
+
+Se registra la factura y su detalle, pero antes de impactar definitivamente el stock del producto se establece un punto de guardado. Si la cantidad solicitada supera el stock disponible, se ejecuta un ROLLBACK al SAVEPOINT y se lanza un error mediante THROW, provocando la reversión de toda la operación.
+Finalmente, se realizaron consultas de verificación (SELECT TOP ... FROM Factura, DetalleFactura, Producto) para comprobar que en los casos con error no quedaban datos parciales y que la integridad se mantenía.
+
+
 **TEMA 4 "  Vistas y vistas indexadas "** 
 Vistas.
 Una vista es una instrucción T-SQL almacenada que actúa como una fuente lógica de datos. Puede considerarse una tabla virtual cuyo contenido se genera dinámicamente cada vez que se consulta, ya que la vista no almacena datos físicamente en la base de datos salvo en el caso particular de las vistas indexadas. Su definición se basa en una sentencia SELECT, y puede involucrar una o varias tablas, simplificando el acceso a consultas complejas mediante un nombre único.  (Medina Serrano, 2015; Microsoft, 2024)
