@@ -105,6 +105,53 @@ Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Su
 Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
 
 **TEMA 3 "Manejo de transacciones y transacciones anidadas"** 
+Una transacción SQL es una secuencia de una o más operaciones de base de datos tratadas como una unidad de trabajo indivisible. Su finalidad es asegurar que los cambios en la base de datos se apliquen de manera coherente y sin corrupción de los datos.
+
+Propiedades ACID de las transacciones: Las transacciones se rigen por las propiedades ACID, que garantizan su fiabilidad y consistencia:
+
+Atomicidad: La transacción se ejecuta completamente o no se ejecuta en absoluto. Si alguna operación falla, todas se revierten.
+
+Coherencia: La base de datos pasa de un estado válido a otro, respetando restricciones como claves primarias, foráneas, y reglas de negocio.
+
+Aislamiento: Las transacciones concurrentes no interfieren entre sí.
+
+Se establecen niveles de aislamiento como READ COMMITTED, REPEATABLE READ y SERIALIZABLE para equilibrar rendimiento y consistencia.
+
+Durabilidad: Una vez confirmada, la transacción permanece almacenada incluso ante fallos del sistema, gracias al uso de registros en medios persistentes.
+Estas propiedades conforman el núcleo del modelo transaccional y aseguran que el sistema mantenga la integridad lógica de los datos.
+
+**Implementación de transacciones SQL**
+El control de transacciones en SQL se realiza mediante las instrucciones básicas:
+
+BEGIN: inicia una transacción.
+
+COMMIT: confirma los cambios realizados.
+
+ROLLBACK: revierte los cambios ante un error o fallo.
+
+Estos comandos permiten agrupar operaciones, controlar errores y mantener la coherencia de los datos. Su correcta aplicación es esencial en procedimientos almacenados y aplicaciones críticas que dependen de la integridad transaccional.
+Desafíos comunes en el manejo de transacciones.
+El uso de transacciones presenta desafíos relacionados con la concurrencia, los bloqueos (deadlocks) y la gestión de errores.
+Cuando varias transacciones intentan acceder a los mismos recursos simultáneamente, pueden generar conflictos que deterioran el rendimiento o la consistencia del sistema.
+
+Para mitigar estos problemas, se implementan mecanismos como:
+
+Bloqueos (Locks): controlan el acceso a los datos; los bloqueos compartidos permiten lectura concurrente, mientras que los exclusivos garantizan escritura segura.
+
+Niveles de aislamiento: determinan la visibilidad de los cambios entre transacciones y equilibran rendimiento y fiabilidad.
+
+Puntos de guardado (SAVEPOINT): permiten realizar retrocesos parciales, evitando la anulación total de una transacción en caso de error
+
+**Transacciones anidadas y puntos de guardado**
+Las transacciones anidadas son transacciones dentro de una transacción principal. Permiten dividir una operación compleja en subtransacciones independientes, mejorando la modularidad y el control de errores.
+ Aunque no todos los sistemas de gestión de bases de datos (SGBD) las soportan de forma nativa, es posible simularlas mediante puntos de guardado, que marcan etapas intermedias dentro de una misma transacción.
+ 
+Funcionamiento:
+Se inicia la transacción principal.
+Se definen puntos de guardado en pasos críticos.
+Ante un error, se revierte hasta el punto de guardado, sin cancelar toda la transacción.
+Finalmente, se confirma la transacción completa cuando todas las operaciones son exitosas
+Este enfoque permite mayor flexibilidad y control, especialmente en procesos de múltiples etapas como inserciones masivas, actualizaciones dependientes o cálculos secuenciales.
 
 **TEMA 4 "  Vistas y vistas indexadas "** 
 Vistas.
