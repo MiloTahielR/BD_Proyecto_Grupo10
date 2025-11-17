@@ -1,4 +1,4 @@
-# Proyecto de Estudio!
+# Proyecto de Estudio
 
     
 **“Tienda de emprendedores regionales”**
@@ -62,10 +62,40 @@ los clientes.
 fuera del alcance del sistema
 
 ### Definición o planteamiento del problema
+En una aplicación donde clientes y emprendedores interactúan, registran cuentas y gestionan productos, resulta indispensable contar con un sistema de base de datos que centralice toda la información que la app utiliza. Sin embargo, sin una estructura adecuada, los datos sobre emprendedores, clientes, productos, precios, stock y ventas pueden quedar dispersos o mal integrados, lo cual genera fallas en las funciones de la app, errores en las transacciones y dificultades para garantizar una experiencia confiable al usuario.
+Dado que todas las operaciones como registro, publicación de productos, creación de carritos, compras y pagos se realizan directamente desde la app, surge el siguiente problema de investigación:
+¿Cómo diseñar una base de datos que permita centralizar y controlar la información utilizada por la app, garantizando integridad en las operaciones, consistencia en los datos y trazabilidad completa de las transacciones entre emprendedores y clientes?
 
-Pellentesque interdum aliquam magna sit amet rutrum. Nulla aliquam ligula nec quam iaculis dictum. In cursus aliquam cursus. Nullam a sem vel sapien iaculis finibus. Donec aliquam dictum viverra. Etiam ut orci lacus.
+### Objetivo del Trabajo Práctico
+El objetivo del trabajo práctico es desarrollar una base de datos que permita gestionar de manera eficiente la información de una aplicación donde emprendedores publican sus productos y los clientes realizan compras, controlando usuarios, productos, categorías, carritos, facturación y pagos, y facilitando la consulta y generación de reportes relacionados con las operaciones comerciales de la plataforma.
+
+### Objetivo Generales
+Diseñar e implementar un sistema de base de datos que centralice la información utilizada por la app Tienda de Emprendedores, garantizando la integridad de los datos, la consistencia de las operaciones y la trazabilidad completa de cada venta realizada entre clientes y emprendedores.
+
+### Objetivos Específicos
+● Registrar y mantener información detallada sobre emprendedores, clientes, productos, categorías, precios y stock.
+
+● Controlar las operaciones comerciales de la app mediante el registro de carritos, items de compra, facturación y pagos.
+
+● Gestionar el estado del proceso de compra, desde la creación del carrito hasta el registro del pago y la confirmación de la venta.
+
+● Permitir consultas y generación de reportes que faciliten el análisis de productos, ventas, emprendedores y actividad comercial dentro de la plataforma.
+
+● Garantizar la integridad y consistencia de los datos mediante el uso de transacciones y transacciones anidadas en operaciones críticas como la venta.
+
+● Optimizar el rendimiento del sistema utilizando vistas e índices para acelerar las consultas más frecuentes realizadas por la app.
 
 ## CAPITULO II: MARCO CONCEPTUAL O REFERENCIAL
+El desarrollo del sistema de gestión Tienda de Emprendedores se apoya en una serie de herramientas fundamentales del motor SQL Server que permiten garantizar eficiencia, integridad y organización en el manejo de datos. En este proyecto se aplican específicamente cinco componentes esenciales: procedimientos almacenados, vistas, índices, transacciones y transacciones anidadas.
+
+Los procedimientos almacenados permiten encapsular instrucciones SQL que realizan tareas específicas, como insertar productos, registrar ventas, actualizar registros o consultar información compleja. Su uso reduce la duplicación de código, mejora el rendimiento y asegura que las operaciones críticas se ejecuten de manera uniforme y controlada.
+
+Las vistas cumplen un rol importante en la simplificación del acceso a la información. Son consultas predefinidas que presentan datos provenientes de una o varias tablas, facilitando la obtención de información sin necesidad de escribir consultas complejas. En un sistema comercial como Tienda de Emprendedores, las vistas se utilizan para mostrar productos, precios, facturación o reportes sin exponer directamente la estructura interna de la base de datos, contribuyendo a mayor seguridad y claridad en la consulta de datos.
+
+Los índices permiten optimizar el rendimiento de las búsquedas y mejorar la velocidad de ejecución de consultas que utilizan filtros, ordenamientos o claves importantes. Al crear índices en columnas estratégicas, como claves primarias, claves foráneas o campos que se consultan frecuentemente, el sistema puede responder más rápido, lo cual es esencial cuando la base de datos incrementa su volumen de información debido al crecimiento del negocio.
+El uso de transacciones garantiza que los procesos que involucran múltiples operaciones se ejecuten de forma segura y consistente. Una transacción asegura que una serie de instrucciones SQL se comporte como una unidad indivisible: o se realiza completamente o se anula por completo. Esto es crucial en procesos comerciales como la creación de facturas, el registro de pagos o la actualización del inventario, donde un error podría dejar los datos en un estado incoherente si no existiera este mecanismo.
+Por último, las transacciones anidadas permiten estructurar procesos internos dentro de una transacción mayor. Esto proporciona un control adicional sobre cada etapa del proceso y permite manejar errores específicos en pasos intermedios. Su uso resulta especialmente valioso cuando una operación principal depende de varios subprocesos que también deben validarse o revertirse en caso de fallas. Su aplicación en el proyecto demuestra un manejo avanzado de la integridad transaccional.
+La integración coherente de procedimientos almacenados, vistas, índices y mecanismos transaccionales permite construir un sistema seguro, eficiente y preparado para soportar operaciones comerciales reales, garantizando la integridad de los datos y la escalabilidad futura del proyecto.
 
 **TEMA 1 " ---- "** 
 Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
@@ -74,6 +104,9 @@ Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Su
 **TEMA 2 " ----- "** 
 Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
 
+**TEMA 3 "Manejo de transacciones y transacciones anidadas"** 
+
+**TEMA 4 " ----- "** 
 ...
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
