@@ -191,7 +191,21 @@ Donec lobortis tincidunt erat, non egestas mi volutpat in. Cras ante purus, luct
 Vestibulum rutrum feugiat molestie. Nunc id varius augue. Ut augue mauris, venenatis et lacus ut, mattis blandit urna. Fusce lobortis, quam non vehicula scelerisque, nisi enim ultrices diam, ac tristique libero ex nec orci.
 
  **b) Herramientas (Instrumentos y procedimientos)**
-Donec lobortis tincidunt erat, non egestas mi volutpat in. Cras ante purus, luctus sed fringilla non, ullamcorper at eros. Integer interdum id orci id rutrum. Curabitur facilisis lorem sed metus interdum accumsan. 
+Para la recolección, análisis y tratamiento de la información en el desarrollo del proyecto Tienda de Emprendedores Regionales, se emplearon herramientas técnicas y fuentes documentales oficiales. A continuación, se detallan los instrumentos utilizados durante el trabajo.
+
+**Instrumentos utilizados:**
+
+Motor de base de datos SQL Server:
+ Constituyó la plataforma central para la implementación, prueba y validación de los componentes del proyecto, incluyendo procedimientos almacenados, funciones, vistas, índices y mecanismos de transacción.
+
+
+Entorno de desarrollo SQL Server Management Studio (SSMS):
+ Herramienta gráfica empleada para la escritura, ejecución, monitoreo y depuración de consultas SQL, permitiendo además realizar mediciones de rendimiento mediante STATISTICS TIME e IO.
+
+
+Documentación oficial de Microsoft Learn:
+ Fuente principal de consulta teórica para comprender el funcionamiento, sintaxis y mejores prácticas asociadas al motor SQL Server. Aseguró la validez conceptual de los procedimientos implementados y el correcto uso de herramientas como vistas indexadas, transacciones o tipos de índices.
+ 
 
 
 ## CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS 
