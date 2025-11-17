@@ -15,7 +15,7 @@ SELECT
     precio
 FROM Producto;
 
--- select sobre la vista para ver el resultado 
+-- select sobre la vista para ver el resultado muestra algunas columnas de Productos.
 SELECT * from vProductoDatos;
 
 -- 2) Realizar un insert de un lote de datos a travez de la vista
@@ -26,7 +26,7 @@ VALUES
     (1003, 'Bolso de cuero', 32000);
 
 -- 1ra observacion: no puedo hacer un insert si mi vista no incluye todos los campos con condicion not null
--- podría hacer la vista omitiendo campos opcionales (en este caso la tabla productos  no tiene ninguno).
+-- podrÃ­a hacer la vista omitiendo campos opcionales (en este caso la tabla productos  no tiene ninguno).
 
 -- creo una vista con todos los campos not null de mi tabla para continuar con la consigna
 CREATE VIEW vProductoDatos2
@@ -64,7 +64,7 @@ INSERT INTO vProductoDatos2
 SELECT
     3000 + n,
     'Producto ' + CAST(n AS VARCHAR(10)),
-    'Descripción del producto ' + CAST(n AS VARCHAR(10)),
+    'DescripciÃ³n del producto ' + CAST(n AS VARCHAR(10)),
     ABS(CHECKSUM(NEWID())) % 100 + 1,
     CAST((ABS(CHECKSUM(NEWID())) % 50000) + 500 AS FLOAT),
     (ABS(CHECKSUM(NEWID())) % 5) + 1
@@ -85,21 +85,22 @@ WHERE id_producto BETWEEN 1 AND 3;
 select * from Producto;
 -- Se actualzan ambas tablas. hay correspondencia 
 
---4) Borrar todos los registros insertados a través de la vista
+--4) Borrar todos los registros insertados a travÃ©s de la vista
 DELETE FROM vProductoDatos2
 WHERE id_producto >= 3000;
 
--- Verificación
+-- VerificaciÃ³n
 SELECT * FROM vProductoDatos2 WHERE id_producto >= 3000;
 SELECT * FROM Producto WHERE id_producto >= 3000;
 -- En ambos casos devuelve el conjunto vacio 
 
 
---VISTAS INDEXADAS: guarda los resultados de la vista en disco.Los mantiene sincronizados automáticamente con la tabla base.
+--VISTAS INDEXADAS: guarda los resultados de la vista en disco.Los mantiene sincronizados automÃ¡ticamente con la tabla base.
 
---5) Crear un índice sobre alguna de las columnas de la vista creada
--- No se puede crear un índice sobre esa vista porque no está definida con SCHEMABINDING y no cumple los requisitos de una vista indexada.
--- No referencia columnas con el schema (dbo.Producto), entonces creo una vista que si pueda ser indexada
+--5) Crear un Ã­ndice sobre alguna de las columnas de la vista creada
+-- No se puede crear un Ã­ndice sobre esa vista porque no estÃ¡ definida con SCHEMABINDING y no cumple los requisitos de una vista indexada.
+-- No referencia columnas con el schema (dbo.Producto), 
+-- entonces creo una vista que si pueda ser indexada
 
 CREATE VIEW vProductoIndexada
 WITH SCHEMABINDING
@@ -110,7 +111,8 @@ SELECT
     precio
 FROM dbo.Producto;
 GO
--- Un índice clustered Ordena físicamente los datos según la clave del índice.Solo puede haber uno por vista.
+-- Un Ã­ndice clustered Ordena fÃ­sicamente los datos segÃºn la clave del Ã­ndice.
+-- Solo puede haber uno por vista.
 CREATE UNIQUE CLUSTERED INDEX IX_vProductoIndexada_id
 ON vProductoIndexada (id_producto);
 GO
@@ -120,9 +122,23 @@ SELECT * FROM vProductoIndexada;
 
 -- esta vista no permita hacer un INSERT ya que debe incluir todas las columnas NOT NULL que no tengan valor por defecto
 -------------------------------------------------------------------------------------------------------------------------------
--- OTROS ejemplos de vistas mas complejas.
+---- OTROS ejemplos de vistas con Joinn:
 
--- Clientes que compraron un monto mayor a 10mil pesos
+-- creo la vista utilizando dos tablas 
+CREATE VIEW v_ProductosYCategorias
+AS
+SELECT 
+    p.nombre AS producto,
+    c.descripcion AS categoria
+FROM Producto p
+JOIN Categoria c ON p.id_categoria = c.id_categoria;
+
+-- Uso la vista: 
+SELECT * FROM v_ProductosYCategorias;
+-- el resultado es Una vista de los productos con su categoria  categorÃ­a.
+
+
+-- OTRA VISTA: Clientes que compraron un monto mayor a 10mil pesos
 create view compra_mayor10 as 
 select u.id_usuarios, nombre, f.Total
 from usuarios u
@@ -133,7 +149,7 @@ and f.Total > 10000;
 select * from compra_mayor10;
 -- ejemplo de insert que da error: 
 INSERT INTO compra_mayor10 (id_usuarios, nombre, Total)
-VALUES (500, 'Juan Pérez', 15000);
+VALUES (500, 'Juan PÃ©rez', 15000);
 
 --vista para ver todos los datos de la factura unidos
 create view datos_venta as
@@ -147,9 +163,31 @@ join Producto p on p.id_producto = df.id_producto;
 select * from datos_venta;
 
 -- Estas vistas no son actualizable no permiten operaciones DML.
--- Al hacer JOIN a varias tablas, SQL Server ya no sabe en cuál aplicar el UPDATE (salvo casos especiales).
+-- Al hacer JOIN a varias tablas, SQL Server ya no sabe en cuÃ¡l aplicar el UPDATE (salvo casos especiales).
+-------------------------------------------------------------------------------------------------------------
+-- OTROS EJEMPLOS DE VISTAS INDEXADAS:
+-- Creo la vista con SCHEMABINDING
+ 
+CREATE VIEW dbo.v_StockPorCategoria
+WITH SCHEMABINDING
+AS
+SELECT 
+    p.id_categoria,
+    SUM(p.stock) AS StockTotal,
+    COUNT_BIG(*) AS CantidadProductos --por categoria 
+FROM dbo.Producto p
+GROUP BY p.id_categoria;
+
+-- Creo el indice, esto la convierte en vista indexada
+CREATE UNIQUE CLUSTERED INDEX IX_v_StockPorCategoria
+ON dbo.v_StockPorCategoria (id_categoria);
+
+-- Uso la vista, resultado: suma total de stock por categorÃ­a, y cant de productos por categoria .
+SELECT *
+FROM dbo.v_StockPorCategoria;
+
 ------------------------------------------------------------------------------------------------------------------------------
---OTRO CASO para mostrar la diferencia en rendimiento y en el plan de ejecución entre 
+--OTRO CASO para mostrar la diferencia en rendimiento y en el plan de ejecuciÃ³n entre 
 --Una consulta compleja ejecutada directamente sobre tablaS, Y la misma consulta definida dentro de una vista indexada.
 
 SELECT 
@@ -195,12 +233,19 @@ GO
 
 --CONCLUSION BREVE: 
 -- Las vistas son representaciones que muestran el resultado de una consulta y se recalculan cada vez que se ejecutan. 
---Una vista puede involucrar una o varias tablas, simplificando el acceso a consultas complejas mediante un nombre único.
+--Una vista puede involucrar una o varias tablas, simplificando el acceso a consultas complejas mediante un nombre Ãºnico.
 -- cuando una vista es actualizable permite operaciones DML y trabajar sobre ella es equivalente a trabajar sobre las tablas base. 
 -- Es decir que las modificaciones realizadas mediante la vista impactan inmediatamente en las tablas subyacentes.
--- En cambio, las vistas indexadas almacenan físicamente sus datos mediante un índice clustered único, Las vistas normales no permiten índices.
--- Únicamente si la vista cumple los requisitos de SQL Server se puede hacer un indice cluster, lo que permite acceder 
+-- En cambio, las vistas indexadas almacenan fÃ­sicamente sus datos mediante un Ã­ndice clustered Ãºnico, Las vistas normales no permiten Ã­ndices.
+-- Ãšnicamente si la vista cumple los requisitos de SQL Server se puede hacer un indice cluster, lo que permite acceder 
 -- a los resultados precalculados, mejorando significativamente el rendimiento en consultas repetitivas.
+
+
+
+
+
+
+
 
 
 
