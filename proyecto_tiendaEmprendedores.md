@@ -571,6 +571,66 @@ exactitud de las funciones almacenadas, consistencia de los datos en escenarios 
 
 Estas validaciones permitieron asegurar que los resultados fueran fiables y acordes a los objetivos previstos en el proyecto.
 
+CAPÍTULO V: OPTIMIZACIÓN CON ÍNDICES 
+
+
+ Optimización de Consultas mediante Índices en SQL Server
+ 
+En SQL Server, los índices facilitan la consulta eficiente de tablas dentro de las bases de datos, eliminando la necesidad de examinar la totalidad de los conjuntos de datos. Los índices se definen como estructuras de datos especializadas, análogas por ejemplo al índice de un libro, diseñadas para que SQL Server pueda ubicar y extraer filas de manera más efectiva. Su implementación optimiza el tiempo de respuesta y reduce el consumo de recursos computacionales.
+Su funcionamiento se basa en la organización de los datos (o punteros a esos datos) de forma que se agiliza las operaciones de búsqueda. En lugar de realizar un recorrido completo de la tabla, registro a registro, el motor de SQL Server emplea el índice para hallar las filas requeridas con una mayor velocidad.
+
+Tipos Fundamentales de Índices:
+SQL Server implementa varias arquitecturas de índices para distintas necesidades de consulta:
+
+Índices Agrupados (Clustered)
+ Este tipo define la organización física y el orden de almacenamiento de los datos en una tabla. Se establece un índice agrupado, y las filas se guardan físicamente en el disco siguiendo la secuencia de la columna (o columnas) indexada. Solo puede existir un índice agrupado por tabla. Esta característica resulta una ventaja en consultas que operan sobre rangos de valores, facilita un acceso secuencial eficiente a los registros.
+ Ejemplo de Aplicación de Indice Clustered en nuestro Script:
+ <img width="923" height="346" alt="captura_OptClustered" src="https://github.com/user-attachments/assets/04500f6f-829f-425b-aef4-0336e04cdd34" />
+
+
+Índices No Agrupados (Non-clustered)
+A diferencia de los agrupados, los índices no agrupados no alteran la disposición física de los datos. Son una estructura lógica separada que almacena los valores de la clave y un puntero (que funciona como localizador de fila) que apunta hacia la ubicación real del registro en el montón o dentro del índice agrupado. Son de gran utilidad para optimizar el rendimiento de consultas que aplican filtros (por ej con WHERE ) u ordenamiento (por ej ORDER BY) sobre columnas que no forman parte de la clave del índice agrupado. 
+Un tipo de Índice No Agrupado más utilizado es el de INCLUDE, permiten agregar columnas que no son parte de la clave.
+
+Ejemplo de Aplicación de Indice Non Clustered con INCLUDE en nuestro Script:
+ <img width="904" height="384" alt="captura_OptNonClusteredINCLUDE" src="https://github.com/user-attachments/assets/371f9795-bee2-42b8-9e03-563cfeef1154" />
+
+
+Índices Únicos (Unique)
+ Un índice de este tipo asegura que cada valor en la columna (o conjunto de columnas) indexada sea distinto, no permitiendo duplicados. Su función principal es reforzar la integridad de los datos (actuando como una restricción UNIQUE). Se aplica a columnas que deben ser únicas por naturaleza,por ej como identificadores, nombres de usuario o direcciones de correo electrónico.
+ 
+Índices Compuestos (Composite)
+ Este índice incluye múltiples columnas (una clave de índice compuesta) y está diseñado para optimizar consultas que filtran u ordenan, con una combinación de dichas columnas. La secuencia de las columnas definidas en el índice compuesto es importante, ya que las estadísticas del índice se basan prioritariamente en la primera columna (la situada más a la izquierda).
+ 
+Ampliación de Conceptos de Indexación:
+La documentación oficial de Microsoft profundiza en tipos de índices más especializados y en su mantenimiento, aspectos críticos para la administración avanzada de bases de datos.
+
+1. Índices Especializados
+Además de los tipos fundamentales, SQL Server ofrece arquitecturas avanzadas (Microsoft, 2024a):
+Índices Filtrados
+ Son índices no agrupados optimizados que se aplican solo a un subconjunto de filas definido por una cláusula WHERE. Por ejemplo, un índice sobre pedidos que aún no han sido enviados. Eso reduce el tamaño del índice, mejora el rendimiento de las consultas específicas y disminuye el costo de mantenimiento.
+Índices de Almacén de Columnas (Columnstore)
+ Diseñados para cargas de trabajo de análisis y data warehousing (OLAP). En lugar de almacenar datos por filas (almacén de filas), los organizan y comprimen por columnas. Esto permite una compresión de datos muy alta y un rendimiento de consultas analíticas muy rápido.
+
+2. Índices en Tablas Optimizadas para Memoria
+Las tablas que utilizan la tecnología In-Memory OLTP (procesamiento de transacciones en línea en memoria) tienen requisitos de indexación diferentes a las tablas basadas en disco. Es crucial entender que "Todas las tablas optimizadas para memoria deben tener al menos un índice, ya que son los índices los que conectan las filas" (Microsoft, 2024b).
+Para estas tablas, existen dos tipos principales (Microsoft, 2024b):
+Índices no agrupados (B-Tree)
+Son el tipo predeterminado y son útiles para consultas de rango y ordenamiento.
+Índices de Hash
+Optimizados para búsquedas de punto (búsquedas de igualdad exacta). Requieren que se especifique un número de "cubos" (BUCKET_COUNT) durante su creación.
+
+3. Mantenimiento de Índices: Fragmentación
+Con el tiempo, las operaciones de modificación de datos (INSERT, UPDATE, DELETE) provocan que los índices se fragmenten. La fragmentación ocurre cuando "los índices tienen páginas en las que el orden lógico del índice, basado en el valor de clave, no coincide con el orden físico de las páginas" (Microsoft, 2024c).
+Un índice fragmentado reduce la eficiencia de las operaciones de E/S (entrada/salida) y degrada el rendimiento de las consultas. Para gestionar esto, SQL Server ofrece dos comandos principales (Microsoft, 2024c):
+REORGANIZE (Reorganizar): Desfragmenta el nivel hoja del índice (el nivel inferior) reordenando físicamente las páginas para que coincidan con el orden lógico. Generalmente es una operación en línea.
+REBUILD (Recompilar): Vuelve a crear el índice por completo. Es una operación más exhaustiva que elimina toda la fragmentación y puede, según la edición de SQL Server y la sintaxis utilizada, realizarse en línea (online) o sin conexión (offline).
+
+> Acceder al script [scripts-> tema 5](script/Tema5_Optimizacion.sql)
+
+
+
+
 **Documentación**
 Finalmente, se registraron los procedimientos, scripts utilizados, observaciones y resultados obtenidos en cada etapa del trabajo práctico.
  La documentación incluyó explicaciones técnicas, capturas de resultados y conclusiones derivadas de las pruebas, garantizando la trazabilidad, claridad y transparencia del desarrollo realizado.
