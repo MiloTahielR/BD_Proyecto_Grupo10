@@ -343,7 +343,8 @@ El uso del procedimiento almacenado es igualmente eficiente y ofrece mayor modul
 
 **TEMA 2 " ----- "** 
 Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-> Acceder al scripts [scripts-> tema_2](script/Tema5_optimización)
+> Acceder al scripts [scripts-> tema_2](script/Tema 5_optimización) 
+
 **TEMA 3 "Manejo de transacciones y transacciones anidadas"** 
 Una transacción SQL es una secuencia de una o más operaciones de base de datos tratadas como una unidad de trabajo indivisible. Su finalidad es asegurar que los cambios en la base de datos se apliquen de manera coherente y sin corrupción de los datos.
 
