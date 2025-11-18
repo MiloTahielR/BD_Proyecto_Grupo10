@@ -102,64 +102,164 @@ Conceptos:
 
 Procedimientos Almacenados:
 Conjunto de sentencias (instrucciones) SQL que se guardan como un objeto de  Base de Datos y se puede ejecutar en un solo comando. Se usan para ejecutar operaciones completas (inserción,eliminación,actualización), pueden aceptar parámetros de entrada, salida permitiendo modificar los valores que se devuelven.
+
+
+
                                              Ventajas
+
+
+
 Reduce la repetición de código
+
 Facilita la organización y mantenimento del código
+
 Mejora la seguridad
+
 Aumenta el rendimiento porque se ejecuta las operaciones en el servidor de la base de datos
+
                                              Tipos
+
+
 .User-defiend:
+
 Un procedimiento definido por el usuario se puede crear en una base de datos definida por el usuario o en todas las bases de datos del sistema excepto en la base de datos RESOURCE	
+
 .Temporary:
+
 Los procedimientos temporales son una forma de procedimientos definidos por el usuario,son como un procedimiento permanente, salvo que se almacenen en TEMPDB.
 Hay dos tipos de procedimientos temporales locales y globales 
+
 .System
+
 Los procedimientos del sistema se incluyen con el motor de base de datos.Están almacenadas físicamente en la base de datos interna y oculta de RESOURCE ,se muestran de forma lógica en el esquema sys de cada BD definidas por el sistema y por el usuario.
+
                                                Ejecución
+
+
 El método más común es que una aplicación o un usuario llame al procedimiento almacenado para que se ejecute automáticamente cuando se inicie una instancia.Para llamar a un procedimiento se usa la palabra clave EXECUTE o EXEC.
 Los procedimientos del sistema comienzan con el prefijo “sp_ “, puesto que aparecen lógicamente en todas las bases de datos del sistema se pueden ejecutar desde cualquier base de datos sin necesidad de clasificar totalmente el nombre del procedimiento.
 
--Funciones Almacenadas:
+FUNCIONES ALMACENADAS:
 Es un procedimiento que devuelve siempre un valor o tabla. No se pueden modificar directamente los datos. 
 Generalmente solo recibe parámetros de entrada ya que su propósito principal es procesar datos y devolver un resultado. Se usa para realizar cálculos o transformaciones de datos que se necesitan en múltiples consultas.
+
+
                                                  Ventajas
+
 .Programación Modular
+
 .Ejecución más rápida
+
                                                    Tipos
+
 .Funciones escalares:
+
+
 Las funciones escalares definidas por el usuario devuelve un único valor de datos del tipo definido en la clausura RETURNS .En una función escalar insertada el valor escalar es el resultado de una sola instrucción
+
+
 .Funciones con valor de tabla:
+
+
 Las funciones con valor de tabla definidas por el usuario devuelve un tipo de dato tabla,no tienen cuerpo,la tabla es el conjunto resultado de una sola instrucción SELECT
+
+
                                                  Limitaciones
+
+
 Las funciones definidas por el usuario no se pueden utilizar para realizar modificaciones en el estado de la base de datos.
+
 No pueden devolver varios conjuntos de resultados,no admite try…catch
+
 No pueden llamar a un procedimiento almacenado, no pueden usar tablas temporales
 
                                      Diferencias:
 <img width="635" height="427" alt="{9531CFB6-3B30-416C-8A74-6C2EC45F86B7}" src="https://github.com/user-attachments/assets/2a54a35b-08a5-40d7-a1a9-e0e1589e1596" />
+
+
  Procedimientos almacenados sobre la tabla Producto
+
 Se definieron procedimientos almacenados para Insertar, Modificar y Eliminar productos:
+
+
 	Sp_insertar_producto
+
+
+
 <img width="884" height="353" alt="{9F031F37-0747-4AFE-82DD-22DD05B02BDB}" src="https://github.com/user-attachments/assets/daf077a6-1111-44b8-b3cf-787ba01e569e" />
+
+
+
 Sp_modificar_producto
+
+
+
 <img width="1099" height="462" alt="{F5976CBA-F069-4B63-A28A-29ED83C5E9F4}" src="https://github.com/user-attachments/assets/d65c0362-b4b2-44c4-a360-2663d8208eb8" />
+
+
+
 sp_eliminar_producto
+
+
+
 <img width="923" height="207" alt="{8B6C9D57-C2E4-4DB2-9BA6-0B611A14A2D9}" src="https://github.com/user-attachments/assets/0794734d-141a-40c2-9aea-5b4808f861c5" />
+
+
+
 Previamente se insertó un lote de registros en la tabla Categoría para contar con categorías válidas para referenciar desde Producto.
+
+
+
 <img width="906" height="211" alt="{05D7CA24-7846-46FE-8A4D-1C024D841607}" src="https://github.com/user-attachments/assets/27187b4f-f632-4060-8973-3a1cd22bff72" />
-Se ejecutaron los procedimientos con EXEC para:
+
+
+
+Se ejecutaron los procedimientos con EXEC para:}
+
 	Insertar varios productos (por ejemplo, Pastafrola, Bolso, Lámpara, etc.).
+
+
+
 <img width="663" height="499" alt="{1142CEAA-AC09-42B9-B4C6-5A8809D63195}" src="https://github.com/user-attachments/assets/2ea5d52e-0b89-4ab1-8e17-ee49daf3ed86" />
+
+
+
 Modificar un producto existente cambiando nombre, descripción, stock, precio y categoría.
+
+
+
 <img width="1031" height="211" alt="{C3F06530-699A-4640-8947-FF4A65F6A4E4}" src="https://github.com/user-attachments/assets/135b72d4-afb4-4ad2-b47c-20b9ee40bdaa" />
+
+
+
 Eliminar un producto a partir de su id_producto.
+
+
+
 <img width="827" height="100" alt="{8989A13C-0410-44FB-885C-79459F7DB13B}" src="https://github.com/user-attachments/assets/ed2a1459-0033-405c-b515-c9eb538c9cf1" />
+
+
+
 Se comparó la inserción directa con INSERT INTO Producto... frente a la inserción mediante el procedimiento sp_insertar_producto, activando SET STATISTICS TIME y SET STATISTICS IO para medir tiempos y lecturas de disco, observando que si bien los tiempos son similares para un único registro, el uso de procedimientos aporta organización, reutilización y centralización de la lógica.
  inserción directa con INSERT INTO
+
+
+
 ![Imagen de WhatsApp 2025-11-07 a las 11 46 38_d2a4ce7a](https://github.com/user-attachments/assets/2c4a5744-88ed-4736-9049-6defd6e7fa90)
+
+
+
  inserción mediante el procedimiento sp_insertar_producto
+
+
+
 ![Imagen de WhatsApp 2025-11-07 a las 11 47 18_76767ae4](https://github.com/user-attachments/assets/e3e7d30b-c988-4cb8-aad0-8d63c1f330c1)
+
+
+
 Conclusión
+
+
 Ambos métodos producen el mismo resultado en cuanto a operaciones de lectura (mismo número de logical reads), pero el procedimiento almacenado muestra un ligero aumento del tiempo de ejecución total (elapsed time) debido al proceso adicional de compilación y llamada del procedimiento.
 Sin embargo, los procedimientos almacenados ofrecen ventajas importantes a largo plazo:
 Mejor seguridad y mantenimiento, ya que el código SQL se centraliza en el servidor.
@@ -171,22 +271,69 @@ Se crearon funciones escalares como:
 
 
 fn_total_stock() → suma el stock total de la tabla Producto.
+
+
+
 <img width="1016" height="229" alt="{435B4D18-1880-4EAD-B405-88F9014C305B}" src="https://github.com/user-attachments/assets/77f17765-0207-4c94-b64e-1e429b3d55c1" />
+
+
+
 fn_total_categoria(@id_categoria) → calcula el valor total de inventario por categoría (stock * precio).
+
+
+
 <img width="737" height="213" alt="{7896A4E0-A896-4CC7-B3A5-56FD5FC8856D}" src="https://github.com/user-attachments/assets/fb6a45a0-1763-4953-bec8-0784a85d89c6" />
+
+
+
 fn_aplicar_aumento(@id_producto, @porcentaje) → calcula el nuevo precio de un producto aplicando un porcentaje de aumento.
+
+
+
 <img width="959" height="273" alt="{C73AFF75-840A-445F-A211-EB8BB28BAB91}" src="https://github.com/user-attachments/assets/a60cb5d1-ee0d-48e2-8e6c-7e0cbf7f6278" />
+
+
+
 Se probaron las funciones con SELECT y se comparó:
+
+
+
 <img width="670" height="367" alt="{7304A74E-8FB1-48CA-8223-828B6B9C8BA7}" src="https://github.com/user-attachments/assets/4cbc9f02-96cd-4a80-b35c-71bedd63fb5c" />
+
+
+
 Una consulta directa SELECT SUM(precio * stock)
+
+
+
 <img width="223" height="88" alt="{137FC5C9-47B6-4393-85D1-0BBCFE863FCC}" src="https://github.com/user-attachments/assets/41b5d6cc-00c7-4f18-ac1b-12d3eac6dba0" />
+
+
+
 Versus SELECT dbo.fn_total_categoria(6)
+
+
 <img width="269" height="77" alt="{0EC3C68B-F0C6-452C-B48B-8D8C2EE1B9BE}" src="https://github.com/user-attachments/assets/9fb64660-138f-4701-b214-dc264dd34f6f" />
+
+
+
 usando nuevamente SET STATISTICS TIME/IO para observar que el costo de lectura es similar, pero las funciones permiten encapsular lógica y reutilizar cálculos.
+
+
 directa
+
+
+
 ![Imagen de WhatsApp 2025-11-07 a las 12 02 07_70799e3c](https://github.com/user-attachments/assets/990153dc-3d74-426f-9486-3bd1ce5dd2e8)
+
+
+
 Funcion 
+
+
 ![Imagen de WhatsApp 2025-11-07 a las 12 01 42_1c26299d](https://github.com/user-attachments/assets/d5097f8a-7ac6-4254-80ac-93c80d00e918)
+
+
 
 Conclusión:
 Ambos métodos tuvieron un rendimiento similar. No se realizaron lecturas físicas en disco y los tiempos de CPU fueron mínimos.
