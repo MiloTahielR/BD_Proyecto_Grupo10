@@ -1,4 +1,4 @@
-<img width="622" height="59" alt="image" src="https://github.com/user-attachments/assets/53f6345b-cda8-430c-8cf5-fb9b88a75b45" /># Proyecto de Estudio
+## Proyecto de Estudio
 
     
 **“Tienda de emprendedores regionales”**
