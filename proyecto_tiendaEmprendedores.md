@@ -339,10 +339,11 @@ Conclusión:
 Ambos métodos tuvieron un rendimiento similar. No se realizaron lecturas físicas en disco y los tiempos de CPU fueron mínimos.
 La inserción directa fue ligeramente más rápida (0 ms frente a 7 ms), pero la diferencia es insignificante para un solo registro.
 El uso del procedimiento almacenado es igualmente eficiente y ofrece mayor modularidad y reutilización del código.
+> Acceder al scripts [scripts-> tema_1](script/Procedimientos y funciones almacenadas_script.sql)
 
 **TEMA 2 " ----- "** 
 Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-
+> Acceder al scripts [scripts-> tema_2](script/Tema5_optimización)
 **TEMA 3 "Manejo de transacciones y transacciones anidadas"** 
 Una transacción SQL es una secuencia de una o más operaciones de base de datos tratadas como una unidad de trabajo indivisible. Su finalidad es asegurar que los cambios en la base de datos se apliquen de manera coherente y sin corrupción de los datos.
 
@@ -503,6 +504,7 @@ Se genera una nueva factura con el detalle y el stock actualizado.
 Se registra la factura y su detalle, pero antes de impactar definitivamente el stock del producto se establece un punto de guardado. Si la cantidad solicitada supera el stock disponible, se ejecuta un ROLLBACK al SAVEPOINT y se lanza un error mediante THROW, provocando la reversión de toda la operación.
 Finalmente, se realizaron consultas de verificación (SELECT TOP ... FROM Factura, DetalleFactura, Producto) para comprobar que en los casos con error no quedaban datos parciales y que la integridad se mantenía.
 
+> Acceder al scripts [scripts -> tema 3](script/Transacciones-TransaccionesAnidadas.sql)
 
 **TEMA 4 "  Vistas y vistas indexadas "** 
 Vistas.
@@ -534,6 +536,8 @@ Las vistas indexadas resultan especialmente útiles en consultas de análisis so
 
 <img width="1068" height="451" alt="captura_vistaindexada" src="https://github.com/user-attachments/assets/5a58f8c4-80d9-4973-8be3-8abb3a6279e9" />
 
+> Acceder al scripts [scripts-> tema 4](script/Tema4_VISTAS_V.INDEXADAS.sql)
+
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
 
 Donec lobortis tincidunt erat, non egestas mi volutpat in. Cras ante purus, luctus sed fringilla non, ullamcorper at eros.
@@ -559,59 +563,40 @@ Documentación oficial de Microsoft Learn:
  
 
 
-## CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS 
-
-Maecenas molestie lacus tincidunt, placerat dolor et, ullamcorper erat. Mauris tortor nisl, ultricies ac scelerisque nec, feugiat in nibh. Pellentesque interdum aliquam magna sit amet rutrum. 
 
 
 
-### Diagrama conceptual (opcional)
-Ejemplo usando Live Editor https://mermaid.js.org/ (ejemplo opcional)
-```mermaid
-erDiagram
-CUSTOMER  }|..|{  DELIVERY-ADDRESS  : has
-CUSTOMER  ||--o{  ORDER  : places
-CUSTOMER  ||--o{  INVOICE  : "liable for"
-DELIVERY-ADDRESS  ||--o{  ORDER  : receives
-INVOICE  ||--|{  ORDER  : covers
-ORDER  ||--|{  ORDER-ITEM  : includes
-PRODUCT-CATEGORY  ||--|{  PRODUCT  : contains
-PRODUCT  ||--o{  ORDER-ITEM  : "ordered in"
-```
 ### Diagrama relacional
 ![diagrama_relacional](https://github.com/dovillegas/basesdatos_proyecto_estudio/blob/main/doc/image_relational.png)
 
 ### Diccionario de datos
 
-Acceso al documento [PDF](doc/diccionario_datos.pdf) del diccionario de datos.
+Acceso al documento [PDF](doc/DiccionarioProyectoBD.pdf) del diccionario de datos.
 
 
-### Desarrollo TEMA 1 "----"
-
-Fusce auctor finibus lectus, in aliquam orci fermentum id. Fusce sagittis lacus ante, et sodales eros porta interdum. Donec sed lacus et eros condimentum posuere. 
-
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_1](script/tema01_nombre_tema)
-
-### Desarrollo TEMA 2 "----"
-
-Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas a purus arcu. Etiam pellentesque tempor dictum. 
-
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_2](script/tema02_nombre_tema)
-
-... 
 
 
-## CAPÍTULO V: CONCLUSIONES
+## CONCLUSIONES
+El desarrollo del proyecto Tienda de Emprendedores permitió aplicar de manera integrada y práctica los conceptos fundamentales del motor SQL Server, demostrando cómo cada uno de los componentes estudiados contribuye a la eficiencia, seguridad y consistencia del sistema. A través de la creación de vistas, se simplificó el acceso a datos y se facilitó la consulta de información relevante, tanto mediante vistas actualizables como mediante vistas indexadas, las cuales evidenciaron mejoras significativas en el rendimiento de consultas complejas.
+El análisis de índices, especialmente mediante pruebas controladas sobre grandes volúmenes de datos, permitió comprobar cómo los índices agrupados, no agrupados y con columnas incluidas optimizan de forma notable los tiempos de ejecución y la cantidad de lecturas realizadas por el motor. Estos resultados reafirman la importancia de un diseño de índices adecuado para garantizar un sistema escalable y con buen desempeño.
+Los procedimientos almacenados implementados sobre la tabla Producto demostraron la utilidad de encapsular la lógica de negocio dentro de la base de datos, permitiendo realizar operaciones de inserción, actualización y eliminación de manera segura, reutilizable y centralizada. De forma complementaria, las funciones almacenadas permitieron encapsular cálculos frecuentes, brindando resultados consistentes y fácilmente integrables dentro de consultas mayores.
+Finalmente, el trabajo con transacciones y transacciones anidadas representó uno de los aspectos más críticos del proyecto, ya que permitió simular procesos reales de la aplicación como la creación de facturas, registro de detalles y actualización de stock. La implementación de TRY…CATCH, ROLLBACK, SAVEPOINT y THROW permitió validar el cumplimiento de las propiedades ACID, garantizando que ante cualquier error —ya sea por integridad referencial o disponibilidad de stock— el sistema mantenga la coherencia total de los datos.
+En conjunto, todos estos elementos mostraron cómo un diseño de base de datos robusto no solo facilita las operaciones internas del sistema, sino que también asegura que la aplicación funcione de manera confiable, eficiente y preparada para escenarios reales de uso. El proyecto permitió no solo comprender la teoría, sino también aplicarla en un contexto práctico y representativo de una aplicación comercial moderna.
 
-Nunc sollicitudin purus quis ante sodales luctus. Proin a scelerisque libero, vitae pharetra lacus. Nunc finibus, tellus et dictum semper, nisi sem accumsan ligula, et euismod quam ex a tellus. 
 
 
 
 ## BIBLIOGRAFÍA DE CONSULTA
 
- 1. List item
- 2. List item
- 3. List item
- 4. List item
- 5. List item
+● Microsoft. (2024). Vistas (SQL Server). Microsoft Learn. Recuperado de https://learn.microsoft.com/es-es/sql/relational-databases/views/views
+● Microsoft. (2024). Crear vistas indexadas (SQL Server). Microsoft Learn. Recuperado de https://learn.microsoft.com/es-es/sql/relational-databases/views/create-indexed-views
+● Quintana, G. (2014). Aprende SQL: ( ed.). Castelló de la Plana, Spain: Universitat Jaume I. Servei de Comunicació i Publicacions. Recuperado de https://elibro.net/es/ereader/unne/53252?page=154
+● Microsoft. (2024a, 17 de julio). Índices. Microsoft Learn. Recuperado el 3 de noviembre de 2025, de https://learn.microsoft.com/es-es/sql/relational-databases/indexes/indexes?view=sql-server-ver17
+● Microsoft. (2024b, 20 de septiembre). Índices de tablas optimizadas para memoria. Microsoft Learn. Recuperado el 3 de noviembre de 2025, de https://learn.microsoft.com/es-es/sql/relational-databases/in-memory-oltp/indexes-for-memory-optimized-tables?view=sql-server-ver16
+● Microsoft. (2024c, 17 de julio). Reorganizar y volver a generar índices. Microsoft Learn. Recuperado el 3 de noviembre de 2025, de https://learn.microsoft.com/es-es/sql/relational-databases/indexes/reorganize-and-rebuild-indexes?view=sql-server-ver17
+
+● Camuña Rodríguez, J. F. (2025). Lenguajes de definición y modificación de datos SQL. IFCT0310: (1 ed.). Antequera, IC Editorial. Recuperado de https://elibro.net/es/ereader/unne/..
+
+● IEEE-RITA Vol. 5, Núm. 2, May. 2010.
+
 
