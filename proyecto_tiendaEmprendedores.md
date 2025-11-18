@@ -1,4 +1,4 @@
-# Proyecto de Estudio
+<img width="622" height="59" alt="image" src="https://github.com/user-attachments/assets/53f6345b-cda8-430c-8cf5-fb9b88a75b45" /># Proyecto de Estudio
 
     
 **“Tienda de emprendedores regionales”**
@@ -343,7 +343,7 @@ El uso del procedimiento almacenado es igualmente eficiente y ofrece mayor modul
 
 **TEMA 2 " ----- "** 
 Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-> Acceder al scripts [scripts-> tema_2](script/Tema5_optimización) 
+> Acceder al scripts [scripts-> tema_2](script/Tema5_optimizacion) 
 
 **TEMA 3 "Manejo de transacciones y transacciones anidadas"** 
 Una transacción SQL es una secuencia de una o más operaciones de base de datos tratadas como una unidad de trabajo indivisible. Su finalidad es asegurar que los cambios en la base de datos se apliquen de manera coherente y sin corrupción de los datos.
@@ -541,10 +541,40 @@ Las vistas indexadas resultan especialmente útiles en consultas de análisis so
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
 
-Donec lobortis tincidunt erat, non egestas mi volutpat in. Cras ante purus, luctus sed fringilla non, ullamcorper at eros.
-
  **a) Cómo se realizó el Trabajo Práctico**
-Vestibulum rutrum feugiat molestie. Nunc id varius augue. Ut augue mauris, venenatis et lacus ut, mattis blandit urna. Fusce lobortis, quam non vehicula scelerisque, nisi enim ultrices diam, ac tristique libero ex nec orci.
+ 
+Para llevar a cabo el trabajo práctico del proyecto TiendaEmprendedores, se siguió un procedimiento estructurado que permitió desarrollar de manera ordenada cada uno de los contenidos establecidos en la consigna. El enfoque metodológico se organizó en cuatro etapas fundamentales: planificación, desarrollo, validación y documentación.
+
+**Planificación**
+
+En primer lugar, se definieron los objetivos específicos del proyecto, vinculados al uso y aplicación de los conceptos del motor SQL Server: vistas, índices, procedimientos almacenados, funciones almacenadas, transacciones y transacciones anidadas.
+ Se establecieron las tareas necesarias para abordar cada tema, así como las tablas del sistema que se utilizarían para las pruebas, principalmente Producto, Factura, DetalleFactura, Pago, Usuarios y Categoria.
+ Esta planificación permitió organizar las actividades en una secuencia lógica que facilitó su ejecución progresiva.
+ 
+**Desarrollo**
+
+Durante la fase de desarrollo, se implementaron las actividades previstas en la planificación:
+Se crearon vistas simples, actualizables e indexadas para simplificar consultas y evaluar diferencias de rendimiento.
+Se trabajó con índices agrupados y no agrupados, realizando pruebas de optimización sobre una tabla con carga masiva para analizar mejoras en tiempos y lecturas.
+Se implementaron procedimientos almacenados para insertar, modificar y eliminar registros, asegurando que la lógica de negocio quedara centralizada en la base de datos.
+Se desarrollaron funciones almacenadas orientadas a cálculos específicos sobre productos e inventario.
+Se ejecutaron transacciones completas y transacciones anidadas, incluyendo el uso de TRY…CATCH, ROLLBACK y SAVEPOINT, aplicadas al proceso de creación de facturas y actualización de stock.
+
+Cada una de estas acciones fue realizada de manera detallada, teniendo en cuenta la integridad de los datos y el funcionamiento real de la aplicación.
+
+**Validación**
+
+Finalizado el desarrollo técnico, se procedió a la verificación y prueba de cada uno de los elementos implementados.
+Se realizaron pruebas sobre: ejecución correcta de vistas e inserciones mediante vistas,
+rendimiento antes y después de la creación de índices, funcionamiento de procedimientos almacenados frente a operaciones directas,
+exactitud de las funciones almacenadas, consistencia de los datos en escenarios de transacciones exitosas, fallidas y parcialmente revertidas.
+
+Estas validaciones permitieron asegurar que los resultados fueran fiables y acordes a los objetivos previstos en el proyecto.
+
+**Documentación**
+Finalmente, se registraron los procedimientos, scripts utilizados, observaciones y resultados obtenidos en cada etapa del trabajo práctico.
+ La documentación incluyó explicaciones técnicas, capturas de resultados y conclusiones derivadas de las pruebas, garantizando la trazabilidad, claridad y transparencia del desarrollo realizado.
+
 
  **b) Herramientas (Instrumentos y procedimientos)**
 Para la recolección, análisis y tratamiento de la información en el desarrollo del proyecto Tienda de Emprendedores Regionales, se emplearon herramientas técnicas y fuentes documentales oficiales. A continuación, se detallan los instrumentos utilizados durante el trabajo.
