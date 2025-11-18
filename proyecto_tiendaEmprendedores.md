@@ -339,7 +339,7 @@ Conclusión:
 Ambos métodos tuvieron un rendimiento similar. No se realizaron lecturas físicas en disco y los tiempos de CPU fueron mínimos.
 La inserción directa fue ligeramente más rápida (0 ms frente a 7 ms), pero la diferencia es insignificante para un solo registro.
 El uso del procedimiento almacenado es igualmente eficiente y ofrece mayor modularidad y reutilización del código.
-> Acceder al scripts [scripts-> tema_1](script/Procedimientos y funciones almacenadas_script.sql) 
+> Acceder al scripts [scripts-> tema_1](script/Procedimientos_y_funciones_almacenadas_script.sql) 
 ** TEMA V: OPTIMIZACIÓN CON ÍNDICES **
 
 
